@@ -1,0 +1,56 @@
+﻿#Crie as tabelas employee, contact e employee_contact
+
+CREATE TABLE employee (id_person INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,name TINYTEXT NOT NULL,sector TINYTEXT NOT NULL,position TINYTEXT NOT NULL,PRIMARY KEY(id_person))ENGINE=InnoDB;
+
+#Criação de Tabelas em Database
+
+CREATE TABLE contact (id_contact INT(5) UNSIGNED NOT NULL AUTO_INCREMENT,corp_mail VARCHAR(55) NOT NULL,person_mail VARCHAR(55) NOT NULL,address TINYTEXT NOT NULL,phone_1 VARCHAR(15) NOT NULL,phone_2 VARCHAR(15) NOT NULL,start_time TIME NOT NULL,start_time TIME NOT NULL,finish_time TIME NOT NULL,PRIMARY KEY(id_contact))ENGINE=InnoDB;
+CREATE TABLE employee_contact (id_person INT(5) UNSIGNED NOT NULL ,id_contact INT(5) UNSIGNED NOT NULL )ENGINE=InnoDB;
+
+#Constraints e Foreign Keys
+
+ALTER TABLE employee_contact ADD CONSTRAINT person_fk FOREIGN KEY(id_person) REFERENCES employee(id_person);
+ALTER TABLE employee_contact ADD CONSTRAINT contact_fk FOREIGN KEY(id_contact) REFERENCES contact(id_contact);
+
+#Inserindo dados nas tabelas employee, contact e employee_contact
+
+INSERT INTO employee (id_person,name,sector,position)VALUES (1,'Gideon Goddard','Manager','Owner');
+INSERT INTO contact (id_contact,corp_mail,person_mail,address,phone_1,phone_2,start_time,finish_time)VALUES(1,'gideon.goddard@asf.com','gideon.goodard@gmail.com','5th Avenue N1024','+1 211-020-1007','+1 140-319-9028','09:00:00','17:00:00');
+INSERT INTO employee_contact (id_person,id_contact)VALUES(1,1);
+
+#Altere a tabela contact
+
+SELECT * FROM contact WHERE id_contact=1;
+ALTER TABLE contact DROP person_mail;
+ALTER TABLE contact DROP phone_2;
+ALTER TABLE contact CHANGE corp_mail email VARCHAR(55)NOT NULL;
+ALTER TABLE contact CHANGE phone_1 phone VARCHAR(15)NOT NULL;
+SELECT * FROM contact WHERE id_contact=1;
+
+#Altere a tabela employee
+
+SELECT * FROM employee WHERE id_person=1;
+ALTER TABLE employee ADD surname TINYTEXT NOT NULL;
+UPDATE employee SET name='Gideon' WHERE id_person=1;
+UPDATE employee SET surname='Goddard' WHERE id_person=1;
+SELECT * FROM employee WHERE id_person=1;
+
+#Insira novos registros nas tabelas
+
+INSERT INTO employee (id_person,name,sector,position,surname)VALUES (2,'Lloyd','Cybersecurity','Analist','Chun');
+INSERT INTO employee (id_person,name,sector,position,surname)VALUES (3,'Elliot','Cybersecurity','Engineer','Alderson');
+INSERT INTO employee (id_person,name,sector,position,surname)VALUES (4,'Angela','Account Manager','Middle','Moss');
+INSERT INTO employee (id_person,name,sector,position,surname)VALUES (5,'Ollie','Marketing','Major','Parker');
+INSERT INTO contact(id_contact,email,address,phone,start_time,finish_time) VALUES (3,'elliot.alderson@asf.com','5th Avenue N1024','+1 211-020-1009','09:00:00','17:00:00');
+INSERT INTO contact(id_contact,email,address,phone,start_time,finish_time) VALUES (3,'elliot.alderson@asf.com','5th Avenue N1024','+1 211-020-1009','09:00:00','17:00:00');
+INSERT INTO contact(id_contact,email,address,phone,start_time,finish_time)VALUES(4,'angela.moss@asf.com','5th Avenue N1024','+1 211-020-1010','09:00:00','17:00:00');
+INSERT INTO contact(id_contact,email,address,phone,start_time,finish_time)VALUES(5,'ollie.parker@asf.com','5th Avenue N1024','+1 211-020-1011','09:00:00','17:00:00');
+INSERT INTO employee_contact(id_person,id_contact)VALUES(2,2);
+INSERT INTO employee_contact(id_person,id_contact)VALUES(3,3);
+INSERT INTO employee_contact(id_person,id_contact)VALUES(4,4);
+INSERT INTO employee_contact(id_person,id_contact)VALUES(5,5);
+
+
+#Adicione um usuário com senha LinuxForce00 ao SGDB e conceda permissões para administrar a base asf
+
+GRANT ALL PRIVILEGES ON asf.* TO webmaster@localhost IDENTIFIED BY 'LinuxForce00' WITH GRANT OPTION;
